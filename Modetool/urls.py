@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^agenda/', include('agenda.urls')),
+    # forward localhost:8000 to agenda
+    url(r'^', include('agenda.urls')),
 ]

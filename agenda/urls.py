@@ -3,12 +3,10 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    # url('', views.index, name='index'),
-
     # ex /agenda/
-    url('', views.agenda, name='agenda'),
+    url('^$', views.agenda, name='show_agenda'),
     # ex /agenda/5
-    url('<int:entry_id>/', views.entry, name='entry'),
+    url('^<int:entry_id>$', views.entry, name='show_entry'),
     # ex /agenda/template
-    url('template/', views.template, name='template'),
+    url('^template$', views.template, name='show_template'),
 ]
