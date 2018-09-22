@@ -3,6 +3,7 @@
     - Agenda
 {% endblock %}
 {% block content %}
+    <a href="{% url 'show_todo' %}">show todo</a>
     <h2>Agenda</h2>
     {% if entry_list %}
     <ul>

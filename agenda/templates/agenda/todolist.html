@@ -1,0 +1,51 @@
+{% extends 'agenda/base.html' %}
+{% block title %}
+    - Todo
+{% endblock %}
+{% block content %}
+    <a href="{% url 'show_agenda' %}">show agenda</a>
+    <h2>Todo</h2>
+    {% if entry_list %}
+        {% if template_list %}
+            <table style="width:100%" class="table table-bordered">
+                <tr>
+                    <th></th>
+                    <th></th>
+                    {% for entry in entry_list %}
+                        <th><a href="{% url 'show_entry' entry.id %}">{{ entry.name }}</a></th>
+                    {% endfor %}
+                </tr>
+                {% for template in template_list %}
+                    <tr>
+                        <td><a href="{% url 'delete_template_item' template.id %}"><i class="material-icons">delete</i></a>
+                        </td>
+                        <td>{{ template.label }}</td>
+                        {% for entry in entry_list %}
+                            <td><i class="material-icons">done</i></td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+
+            </table>
+        {% else %}
+            No template items
+        {% endif %}
+    {% else %}
+        {% if template_list %}
+            No entry on the agenda
+        {% else %}
+            No template items & No entry on the agenda
+        {% endif %}
+    {% endif %}
+
+
+    <h3>
+        Add item
+    </h3>
+    <form action="{% url 'show_todo' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="+ Add">
+    </form>
+
+{% endblock %}
