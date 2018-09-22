@@ -3,14 +3,21 @@
     - Agenda
 {% endblock %}
 {% block content %}
-    "Here will be the whole agenda (list of entries):"
     <h2>Agenda</h2>
+    {% if entry_list %}
     <ul>
         {% for entry in entry_list %}
-            <li> {{ entry.name }} </li>
+            <li> {{ entry.name }} <a href="{% url 'delete_entry' entry.id %}"><i class="material-icons">delete</i></a>
+            </li>
         {% endfor %}
     </ul>
+    {% else %}
+        No entries on the agenda.
+    {% endif %}
 
+    <h3>
+        Add entry
+    </h3>
     <form action="{% url 'show_agenda' %}" method="post">
         {% csrf_token %}
         {{ form }}

@@ -2,11 +2,13 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-
+from django.shortcuts import render, get_object_or_404
 # Create your views here.
+from rest_framework import generics
+
 from agenda.form import NewEntryForm
 from agenda.models import Entry
+from agenda.serializers import EntrySerializer
 
 
 def agenda(request):
@@ -44,5 +46,25 @@ def entry(request, entry_id):
     return HttpResponse("Here will be the entry (all template items, with corresponding entry item) ")
 
 
+def delete_entry(request, entry_id):
+    e = get_object_or_404(Entry, pk=entry_id)
+    e.delete()
+
+    return agenda(request)
+
+
 def template(request):
     return HttpResponse("here will be the template (list of template items)")
+
+
+# REST API
+
+
+class EntryList(generics.ListAPIView):
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
+
+
+class EntryDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
