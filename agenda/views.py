@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import generics
 
 from agenda.form import NewEntryForm, NewTemplateItemForm
-from agenda.models import Entry, TemplateItem
+from agenda.models import Entry, TemplateItem, EntryItem
 from agenda.serializers import EntrySerializer
 
 
@@ -44,7 +44,17 @@ def agenda(request):
 
 
 def entry(request, entry_id):
-    return HttpResponse("Here will be the entry (all template items, with corresponding entry item) ")
+    e = Entry.objects.get(pk=entry_id)
+    template_item_list = TemplateItem.objects.all()
+    entry_item_list = EntryItem.objects.filter(entry=e)
+    context = {
+        'entry': e,
+        'template_item_list': template_item_list,
+        'entry_item_list': entry_item_list,
+    }
+
+    return render(request, 'agenda/entry.html', context)
+    # return HttpResponse("Here will be the entry (all template items, with corresponding entry item) ")
 
 
 def delete_entry(request, entry_id):

@@ -1,0 +1,39 @@
+{% extends 'agenda/base.html' %}
+{% block title %}
+    - Entry
+{% endblock %}
+{% block content %}
+    <a href="{% url 'show_todo' %}">show todo</a>
+    <h2>{{ entry.name }}</h2>
+    {% if template_item_list %}
+        <table class="table table-striped">
+
+            {% for template_item in template_item_list %}
+                <tr>
+                    <td>{{ template_item.label }}</td>
+                    <td>
+                        {% for entry_item in entry_item_list %}
+                            {% if entry_item.template_item.id == template_item.id %}
+                                {{ entry_item.value }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+
+        </table>
+    {% else %}
+        No items required by template.
+    {% endif %}
+
+    <h3>
+        Add entry
+    </h3>
+    <form action="{% url 'show_agenda' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="+ Add">
+    </form>
+
+{% endblock %}
