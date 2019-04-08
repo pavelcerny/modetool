@@ -78,7 +78,55 @@ def delete_template_item(request, template_item_id):
 def todolist(request):
     # load data
     entry_list = Entry.objects.all()
-    template_list = TemplateItem.objects.all()
+    field_list = TemplateItem.objects.all()
+
+
+    # prepare row labels
+    row_label_array = []
+    for t in field_list:
+        row_label_array.append(t)
+    heigth = len(row_label_array)
+
+    # prepare column labels
+    column_label_array = []
+    for e in entry_list:
+        column_label_array.append(e)
+    width = len(column_label_array)
+
+    # prepare all columns
+    columns_array = [None] * width
+
+    # go through every column
+    for c_id in range(0, width):
+        # prepare each single column
+
+        # row_array = [None] * row_len
+        row_array = [False] * heigth
+        column_label = column_label_array[c_id]
+        value_list = EntryItem.objects.filter(entry=column_label)
+
+        # iterate rows
+        for r_id in range(0, heigth):
+            row_label = row_label_array[r_id]
+            for value in value_list:
+                if (row_label.id == value.id):
+                    # row_array[r_id] = value.value
+                    row_array[r_id] = True
+                    break
+
+        columns_array[c_id] = row_array
+
+
+    # go through every
+    rows_array = [[False for x in range(width)] for y in range(heigth)]
+    for r_id in range(0, heigth):
+        for c_id in range(0, width):
+            rows_array[r_id][c_id] = columns_array[c_id][r_id]
+
+
+
+
+
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
@@ -101,8 +149,9 @@ def todolist(request):
 
     # pass the data to the template
     context = {
-        'entry_list': entry_list,
-        'template_list': template_list,
+        'row_labels': row_label_array,
+        'column_labels' : column_label_array,
+        'rows_array': rows_array,
         'form': form,
     }
 

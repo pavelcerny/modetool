@@ -5,23 +5,32 @@
 {% block content %}
     <a href="{% url 'show_agenda' %}">show agenda</a>
     <h2>Todo</h2>
-    {% if entry_list %}
-        {% if template_list %}
+    {% if column_labels %}
+        {% if row_labels %}
             <table style="width:100%" class="table table-bordered">
                 <tr>
                     <th></th>
                     <th></th>
-                    {% for entry in entry_list %}
-                        <th><a href="{% url 'show_entry' entry.id %}">{{ entry.name }}</a></th>
+                    {% for label in column_labels %}
+                        <th><a href="{% url 'show_entry' label.id %}">{{ label.name }}</a></th>
                     {% endfor %}
                 </tr>
-                {% for template in template_list %}
+                {% for label in row_labels %}
                     <tr>
-                        <td><a href="{% url 'delete_template_item' template.id %}"><i class="material-icons">delete</i></a>
+                        {# show delete link #}
+                        <td>
+                            <a href="{% url 'delete_template_item' label.id %}"><i class="material-icons">delete</i></a>
                         </td>
-                        <td>{{ template.label }}</td>
-                        {% for entry in entry_list %}
-                            <td><i class="material-icons">done</i></td>
+                        {# show row label #}
+                        <td>
+                            {{ label.label }}
+                        </td>
+                        {# show row values #}
+                        {% for row in rows_array %}
+                            <td>
+{#                                <a href="{% url 'show_entry' 1 %}">hello</a>#}
+
+                            </td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
@@ -31,7 +40,7 @@
             No template items
         {% endif %}
     {% else %}
-        {% if template_list %}
+        {% if row_labels %}
             No entry on the agenda
         {% else %}
             No template items & No entry on the agenda

@@ -8,7 +8,9 @@
     {% if entry_list %}
     <ul>
         {% for entry in entry_list %}
-            <li> {{ entry.name }} <a href="{% url 'delete_entry' entry.id %}"><i class="material-icons">delete</i></a>
+            <li>
+                <a href="{% url 'show_entry' entry.id %}">{{ entry.name }}</a>
+                <a href="{% url 'delete_entry' entry.id %}"><i class="material-icons">delete</i></a>
             </li>
         {% endfor %}
     </ul>
